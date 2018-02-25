@@ -1,0 +1,94 @@
+{
+    "plugins": [],
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "jquery": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+        "arrow-parens": "error",
+        "arrow-spacing": "error",
+        "block-spacing": "error",
+        "brace-style": "error",
+        "comma-dangle": "error",
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "curly": "error",
+        "eol-last": [
+            "error",
+            "always"
+        ],
+        "eqeqeq": "error",
+        "indent": [
+            "error",
+            2,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "key-spacing": [
+            "error",
+            {
+                "afterColon": true
+            }
+        ],
+        "keyword-spacing": "error",
+        "no-console": "off",
+        "no-delete-var": "error",
+        "no-eq-null": "error",
+        "no-eval": "error",
+        "no-extra-parens": "error",
+        "no-extra-semi": "error",
+        "no-multi-spaces": "error",
+        "no-return-assign": "error",
+        "no-return-await": "error",
+        "no-undefined": "error",
+        "no-unreachable": "error",
+        "no-unused-vars": [
+            2,
+            {
+                "vars": "local",
+                "args": "none"
+            }
+        ],
+        "no-var": "error",
+        "object-curly-spacing": [
+            2,
+            "always"
+        ],
+        "prefer-const": "error",
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": "error",
+        "semi-spacing": "error",
+        "space-before-blocks": "error",
+        "space-before-function-paren": [
+            "error",
+            {
+                "anonymous": "never",
+                "named": "never",
+                "asyncArrow": "never"
+            }
+        ],
+        "space-infix-ops": [
+            "error",
+            {
+                "int32Hint": true
+            }
+        ],
+        "strict": 0
+    }
+}

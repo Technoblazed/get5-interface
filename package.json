@@ -1,0 +1,39 @@
+{
+  "name": "get5-web-nodejs",
+  "version": "1.0.0",
+  "description": "NodeJS Port of splewis' get5-web application",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon bin/www",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Technoblazed/get5-web-nodejs.git"
+  },
+  "author": "https://github.com/Technoblazed",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Technoblazed/get5-web-nodejs/issues"
+  },
+  "homepage": "https://github.com/Technoblazed/get5-web-nodejs#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "connect-ensure-login": "^0.1.1",
+    "connect-session-sequelize": "^5.2.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "express-nunjucks": "^2.2.3",
+    "express-session": "^1.15.6",
+    "lodash": "^4.17.5",
+    "moment": "^2.20.1",
+    "mysql2": "^1.5.2",
+    "passport": "^0.4.0",
+    "passport-steam": "^1.0.8",
+    "path": "^0.12.7",
+    "requestretry": "^1.13.0",
+    "sequelize": "^4.34.0",
+    "serve-favicon": "^2.4.5"
+  }
+}
