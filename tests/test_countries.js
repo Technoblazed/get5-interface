@@ -1,6 +1,7 @@
 const _ = require('lodash');
-const countries = require('../lib/countries');
 const expect = require('chai').expect;
+
+const countries = require('../lib/countries');
 
 describe('countries', () => {
   describe('getCountryName', () => {
