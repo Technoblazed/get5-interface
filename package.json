@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon bin/www",
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha \"tests/*.js\""
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,9 @@
     "url": "https://github.com/Technoblazed/get5-web-nodejs/issues"
   },
   "homepage": "https://github.com/Technoblazed/get5-web-nodejs#readme",
+  "directories": {
+    "test": "test"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "connect-ensure-login": "^0.1.1",
@@ -35,5 +39,9 @@
     "requestretry": "^1.13.0",
     "sequelize": "^4.34.0",
     "serve-favicon": "^2.4.5"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.1"
   }
 }
