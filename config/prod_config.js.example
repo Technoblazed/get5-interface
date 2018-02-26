@@ -1,0 +1,73 @@
+module.exports = {
+  /**
+   * These settings must be changed before running
+   */
+  required: {
+    mysql: {
+      hostname: '', // MySQL Database Hostname
+      username: '', // MySQL Database Username
+      password: '', // MySQL Database Password
+      database: '' // MySQL Database Name
+    },
+    site: {
+      secretKey: '' // Secret key used for Steam logon cookies
+    },
+    steam: {
+      apiKey: '' // See https://steamcommunity.com/dev/apikey
+    }
+  },
+  /**
+   * These settings can be changed if required
+   */
+  optional: {
+    admins: {
+      // Admins will have access to create "public" teams and if "adminsAccessAllMatches" is enabled, they will be able to access admin info for all matches.
+      adminIds: [],
+      // Restrict which clients can login to the web interface, by default any user can login and create teams/servers/matches.
+      whitelistedIds: []
+    },
+    maps: {
+      // Maps whose checkbox is selected (in the mappool) by default in the "create a match" page
+      defaultMaplist: [
+        'de_cache',
+        'de_cbble',
+        'de_inferno',
+        'de_mirage',
+        'de_nuke',
+        'de_overpass',
+        'de_train'
+      ],
+      // All maps that are selectable in the "create a match" page
+      mapList: [
+        'de_cache',
+        'de_cbble',
+        'de_inferno',
+        'de_mirage',
+        'de_nuke',
+        'de_overpass',
+        'de_train',
+        'de_dust2',
+        'de_season'
+      ]
+    },
+    site: {
+      defaultPage: '/matches' // Default page for the site
+    },
+    user: {
+      adminsAccessAllMatches: false, // Whether admins can always access any match admin panel
+      createMatchTitleText: false, // Whether settings for "match title text" and "team text" appear on "create a match page"
+      userMaxMatches: 1000, // Max matches a user can create
+      userMaxServers: 10, // Max servers a user can create
+      userMaxTeams: 100 // Max teams a user can create
+    }
+  },
+  /**
+   * It is recommended that you do not change these values unless you are aware of what you are doing
+   */
+  dev: {
+    site: {
+      debug: false,
+      testing: false
+    }
+  }
+};

@@ -1,0 +1,32 @@
+module.exports = {
+  required: { // These must be changed for test cases to pass
+    mysql: {
+      hostname: '',
+      username: '',
+      password: '',
+      database: ''
+    },
+    site: {
+      secretKey: ''
+    },
+    steam: {
+      apiKey: ''
+    }
+  },
+  optional: {
+    site: {
+      defaultPage: '/matches'
+    },
+    user: {
+      userMaxMatches: 1000,
+      userMaxServers: 10,
+      userMaxTeams: 100
+    }
+  },
+  dev: { // These should not be changed
+    site: {
+      debug: false,
+      testing: true
+    }
+  }
+};
