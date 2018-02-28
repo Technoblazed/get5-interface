@@ -23,12 +23,12 @@ describe('countries', () => {
 
   describe('getFlagImgPath', () => {
     const testValues = {
-      'us': '/static/img/valve_flags/us.png',
-      'US': '/static/img/valve_flags/us.png',
-      'fr': '/static/img/valve_flags/fr.png',
-      'FR': '/static/img/valve_flags/fr.png',
-      'f': '/static/img/_unknown.png',
-      '': '/static/img/_unknown.png'
+      'us': '/assets/img/valve_flags/us.png',
+      'US': '/assets/img/valve_flags/us.png',
+      'fr': '/assets/img/valve_flags/fr.png',
+      'FR': '/assets/img/valve_flags/fr.png',
+      'f': '/assets/img/_unknown.png',
+      '': '/assets/img/_unknown.png'
     };
 
     _.forOwn(testValues, (value, key) => {
