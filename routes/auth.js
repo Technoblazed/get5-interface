@@ -13,7 +13,7 @@ module.exports = (passport) => {
     failureRedirect: '/',
     successReturnToOrRedirect: '/'
   }), (req, res) => {
-    req.session.save(() => {
+    return req.session.save(() => {
       res.redirect('/');
     });
   });
@@ -21,7 +21,7 @@ module.exports = (passport) => {
   router.get('/auth/logout', ensureLoggedIn, (req, res) => {
     req.logout();
 
-    req.session.save(() => {
+    return req.session.save(() => {
       res.redirect('/');
     });
   });

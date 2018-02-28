@@ -34,7 +34,7 @@ expressNunjucks(app, {
 });
 
 //app.use(favicon(path.join(__dirname, 'client', 'public', 'assets', 'favicon.ico')));
-app.use('/', express.static(path.join(__dirname, 'static')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

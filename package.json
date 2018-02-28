@@ -1,7 +1,7 @@
 {
-  "name": "get5-web-nodejs",
+  "name": "get5-interface",
   "version": "1.0.0",
-  "description": "NodeJS Port of splewis' get5-web application",
+  "description": "User Interface for Get5",
   "main": "app.js",
   "private": true,
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Technoblazed/get5-web-nodejs.git"
+    "url": "git+https://github.com/Technoblazed/get5-interface.git"
   },
   "author": "https://github.com/Technoblazed",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/Technoblazed/get5-web-nodejs/issues"
+    "url": "https://github.com/Technoblazed/get5-interface/issues"
   },
-  "homepage": "https://github.com/Technoblazed/get5-web-nodejs#readme",
+  "homepage": "https://github.com/Technoblazed/get5-interface#readme",
   "directories": {
     "test": "test"
   },

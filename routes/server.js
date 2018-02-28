@@ -30,7 +30,7 @@ module.exports = () => {
       limit: 50
     });
 
-    res.render('servers', {
+    return res.render('servers', {
       servers
     });
   });
