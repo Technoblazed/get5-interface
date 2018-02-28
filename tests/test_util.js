@@ -6,6 +6,7 @@ const util = require('../lib/util');
 describe('util', () => {
   describe('formatMapname', () => {
     const testValues = {
+      'cs_assault': 'cs_assault',
       'de_cbble': 'Cobblestone',
       'de_dust2': 'Dust II',
       'de_inferno': 'Inferno',
