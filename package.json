@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon bin/www",
-    "start": "node app.js",
+    "start": "node bin/www",
     "test": "mocha \"tests/*.js\""
   },
   "repository": {
@@ -32,14 +32,18 @@
     "express-session": "^1.15.6",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
+    "morgan": "^1.9.0",
     "mysql2": "^1.5.2",
+    "nunjucks": "^3.1.2",
     "passport": "^0.4.0",
     "passport-steam": "^1.0.8",
     "path": "^0.12.7",
     "requestretry": "^1.13.0",
     "sequelize": "^4.34.0",
     "serve-favicon": "^2.4.5",
-    "srcds-rcon": "^2.2.1"
+    "srcds-rcon": "^2.2.1",
+    "steamid": "^1.1.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "chai": "^4.1.2",

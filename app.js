@@ -33,7 +33,7 @@ expressNunjucks(app, {
   filters: {}
 });
 
-app.use(favicon(path.join(__dirname, 'client', 'public', 'assets', 'favicon.ico')));
+//app.use(favicon(path.join(__dirname, 'client', 'public', 'assets', 'favicon.ico')));
 app.use('/', express.static(path.join(__dirname, 'static')));
 
 app.use(bodyParser.json());
@@ -127,4 +127,4 @@ app.use((err, req, res) => {
   });
 });
 
-module.exports = app;
+module.exports = { app };

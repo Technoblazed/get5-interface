@@ -2,7 +2,7 @@
 
 const app = require('../app').app;
 const config = require('../config/prod_config');
-const db = require('../db/models');
+const db = require('../models');
 const debug = require('debug')('get5-web:server');
 const server = require('../app').server;
 
@@ -20,7 +20,7 @@ function normalizePort(val) {
   return false;
 }
 
-const port = normalizePort(config.webserver.port || 3000);
+const port = normalizePort(config.dev.site.port || 3000);
 
 app.set('port', port);
 

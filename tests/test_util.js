@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 
 const util = require('../lib/util');
 
-describe('utils', () => {
+describe('util', () => {
   describe('formatMapname', () => {
     const testValues = {
       'de_cbble': 'Cobblestone',

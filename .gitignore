@@ -57,6 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
-config/*_config.json
+config/*_config.js
 
 test.js
