@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     auths: {
       type: DataTypes.BLOB
     },
+    specTeam: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: null
+    },
     publicTeam: {
       type: DataTypes.BOOLEAN,
       defaultValue: null
