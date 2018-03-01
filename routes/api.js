@@ -102,11 +102,11 @@ const matchCheck = async(req, res, next) => {
   }
 
   if (req.body.key !== match.apiKey) {
-    return res.end('Wrong API Key');
+    return res.status(400).end('Wrong API Key');
   }
 
   if (matches.finalized(match)) {
-    return res.end('Match already finalized');
+    return res.status(400).end('Match already finalized');
   }
 
   req.match = match;
