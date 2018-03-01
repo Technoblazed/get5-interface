@@ -1,15 +1,13 @@
 const db = require('../models/');
 const debug = require('debug')('get5-web:server');
-const defaults = require('defaults');
 const express = require('express');
 const matches = require('../lib/matches');
-const RateLimit = require('express-rate-limit');
 
 const router = express.Router();
 
 module.exports = () => {
+  // Ratelimit @ 60 per hour
   router.post('/match/:matchId/finish', matchCheck, async(req, res) => {
-    const match = req.match;
     const winningTeam = req.body.winner;
 
     let matchForfeit = false;
@@ -18,9 +16,9 @@ module.exports = () => {
     let team2Score = 0;
 
     if (winningTeam === 'team1') {
-      matchWinner = match.team1Id;
+      matchWinner = req.match.team1Id;
     } else if (winningTeam === 'team2') {
-      matchWinner = match.team2Id;
+      matchWinner = req.match.team2Id;
     }
 
     const forfeit = req.body.forfeit;
@@ -55,13 +53,13 @@ module.exports = () => {
         transaction
       });
 
-      const server = await db.GameServers.findById(match.serverId, {
+      const server = await db.GameServers.findById(req.match.serverId, {
         transaction
       }).then((server) => server.updateAttributes({
         inUse: false
       }));
 
-      debug(`Finished match #${match.id}, winner: ${winningTeam}, on server ${server.id}`);
+      debug(`Finished match #${req.match.id}, winner: ${winningTeam}, on server ${server.id}`);
 
       await transaction.commit();
 
@@ -73,8 +71,36 @@ module.exports = () => {
     }
   });
 
-  router.post('/match/:matchId/map/:mapNumber/start', (req, res) => {
+  // Ratelimit @ 60 per hour
+  router.post('/match/:matchId/map/:mapNumber/start', async(req, res) => {
+    let transaction;
 
+    try {
+      if (!req.match.startTime) {
+        await db.Matches.findById(req.match.id, {
+          transaction
+        }).then((match) => match.updateAttributes({
+          startTime: new Date()
+        }));
+      }
+
+      await db.MapStats.findOrCreate({
+        where: {
+          matchId: req.match.id,
+          mapNumber: req.params.mapNumber,
+          mapName: req.body.mapname
+        },
+        transaction
+      });
+
+      await transaction.commit();
+
+      return res.end('Success');
+    } catch (e) {
+      await transaction.rollback();
+
+      return res.end('Failed');
+    }
   });
 
   router.post('/match/:matchId/map/:mapNumber/update', (req, res) => {
