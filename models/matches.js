@@ -67,11 +67,11 @@ module.exports = (sequelize, DataTypes) => {
 
   Matches.associate = (models) => {
     Matches.hasMany(models.MapStats, {
-      foreignKey: 'match_id',
+      foreignKey: 'matchId',
       sourceKey: 'id'
     });
     Matches.hasMany(models.PlayerStats, {
-      foreignKey: 'match_id',
+      foreignKey: 'matchId',
       sourceKey: 'id'
     });
   };

@@ -42,11 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: 'id'
     });
     Teams.hasMany(models.Matches, {
-      foreignKey: 'team1_id',
+      foreignKey: 'team1Id',
       sourceKey: 'id'
     });
     Teams.hasMany(models.Matches, {
-      foreignKey: 'team2_id',
+      foreignKey: 'team2Id',
       sourceKey: 'id'
     });
     Teams.hasMany(models.Matches, {
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       sourceKey: 'id'
     });
     Teams.hasMany(models.PlayerStats, {
-      foreignKey: 'team_id',
+      foreignKey: 'teamId',
       sourceKey: 'id'
     });
   };

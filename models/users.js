@@ -24,15 +24,15 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.hasMany(models.GameServers, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
       sourceKey: 'id'
     });
     User.hasMany(models.Matches, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
       sourceKey: 'id'
     });
     User.hasMany(models.Teams, {
-      foreignKey: 'user_id',
+      foreignKey: 'userId',
       sourceKey: 'id'
     });
   };

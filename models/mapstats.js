@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
   MapStats.associate = (models) => {
     MapStats.hasMany(models.MapStats, {
-      foreignKey: 'map_id',
+      foreignKey: 'mapId',
       sourceKey: 'id'
     });
   };

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
   GameServers.associate = (models) => {
     GameServers.hasMany(models.Matches, {
-      foreignKey: 'server_id',
+      foreignKey: 'serverId',
       sourceKey: 'id'
     });
   };

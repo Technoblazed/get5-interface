@@ -11,12 +11,14 @@ const expressNunjucks = require('express-nunjucks');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const passport = require('passport');
-const steamStrategy = require('passport-steam').Strategy;
 const path = require('path');
+const RateLimit = require('express-rate-limit');
 const session = require('express-session');
 const sequelizeStore = require('connect-session-sequelize')(session.Store);
+const steamStrategy = require('passport-steam').Strategy;
 
 const app = express();
+const server = require('http').createServer(app);
 
 const isDev = app.get('env').trim() !== 'production';
 
@@ -59,17 +61,6 @@ app.use(sessionParser);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-  res.locals.IS_DEV = isDev;
-  res.locals.USER = req.user;
-  res.locals.PATH = req.url;
-
-  next();
-});
-
-app.use(require(path.join(__dirname, 'routes', 'index'))());
-app.use(require(path.join(__dirname, 'routes', 'auth'))(passport));
-
 passport.use(new steamStrategy({
   returnURL: '/auth/steam/callback',
   realm: '/auth/steam/callback',
@@ -111,6 +102,29 @@ passport.deserializeUser((user, done) => {
   });
 });
 
+const limiter = new RateLimit({
+  windowMs: 60 * 1000,
+  max: 250,
+  delayMs: 0
+});
+
+app.use(limiter);
+
+app.use(require(path.join(__dirname, 'routes', 'index'))());
+app.use(require(path.join(__dirname, 'routes', 'api'))());
+app.use(require(path.join(__dirname, 'routes', 'auth'))(passport));
+app.use(require(path.join(__dirname, 'routes', 'match'))());
+app.use(require(path.join(__dirname, 'routes', 'server'))());
+app.use(require(path.join(__dirname, 'routes', 'team'))());
+
+app.use((req, res, next) => {
+  res.locals.IS_DEV = isDev;
+  res.locals.USER = req.user;
+  res.locals.PATH = req.url;
+
+  next();
+});
+
 app.use((req, res, next) => {
   const err = new Error('Not Found');
 
@@ -127,4 +141,4 @@ app.use((err, req, res) => {
   });
 });
 
-module.exports = { app };
+module.exports = { app, server };
