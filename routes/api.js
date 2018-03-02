@@ -6,52 +6,59 @@ const matches = require('../lib/matches');
 const router = express.Router();
 
 module.exports = () => {
+  router.param('matchId', async(req, res, next, id) => {
+    const matchId = req.params.matchId;
+
+    const match = await db.Matches.findById(matchId);
+
+    if (!match) {
+      return res.status(404).end('Not found');
+    }
+
+    if (req.body.key !== match.apiKey) {
+      return res.status(400).end('Wrong API Key');
+    }
+
+    if (matches.finalized(match)) {
+      return res.status(400).end('Match already finalized');
+    }
+
+    req.match = match;
+
+    next();
+  });
+
   // Ratelimit @ 60 per hour
-  router.post('/match/:matchId/finish', matchCheck, async(req, res) => {
+  router.post('/match/:matchId/finish', async(req, res) => {
+    const forfeit = req.body.forfeit;
     const winningTeam = req.body.winner;
 
-    let matchForfeit = false;
-    let matchWinner = null;
-    let team1Score = 0;
-    let team2Score = 0;
-
     if (winningTeam === 'team1') {
-      matchWinner = req.match.team1Id;
+      req.match.winner = req.match.team1Id;
     } else if (winningTeam === 'team2') {
-      matchWinner = req.match.team2Id;
+      req.match.winner = req.match.team2Id;
     }
-
-    const forfeit = req.body.forfeit;
 
     if (forfeit) {
-      matchForfeit = true;
+      req.match.forfeit = true;
 
       if (winningTeam === 'team1') {
-        team1Score = 1;
-        team2Score = 0;
+        req.match.team1Score = 1;
+        req.match.team2Score = 0;
       } else if (winningTeam === 'team2') {
-        team1Score = 0;
-        team2Score = 1;
+        req.match.team1Score = 0;
+        req.match.team2Score = 1;
       }
     }
+
+    req.match.endTime = new Date();
 
     let transaction;
 
     try {
       transaction = await db.sequelize.transaction();
 
-      await db.Matches.update({
-        endTime: new Date(),
-        forfeit: matchForfeit,
-        team1Score,
-        team2Score,
-        winner: matchWinner
-      }, {
-        where: {
-          id: req.match.id
-        },
-        transaction
-      });
+      await req.match.save({ transaction });
 
       const server = await db.GameServers.findById(req.match.serverId, {
         transaction
@@ -59,9 +66,9 @@ module.exports = () => {
         inUse: false
       }));
 
-      debug(`Finished match #${req.match.id}, winner: ${winningTeam}, on server ${server.id}`);
-
       await transaction.commit();
+
+      debug(`Finished match #${req.match.id}, winner: ${winningTeam}, on server ${server.id}`);
 
       return res.end('Success');
     } catch (e) {
@@ -77,11 +84,8 @@ module.exports = () => {
 
     try {
       if (!req.match.startTime) {
-        await db.Matches.findById(req.match.id, {
-          transaction
-        }).then((match) => match.updateAttributes({
-          startTime: new Date()
-        }));
+        req.match.startTime = new Date();
+        req.match.save({ transaction });
       }
 
       await db.MapStats.findOrCreate({
@@ -94,6 +98,8 @@ module.exports = () => {
       });
 
       await transaction.commit();
+
+      debug(`Started match #${req.match.id}, mapnumber: ${req.params.mapNumber}, on map ${req.body.mapname}`);
 
       return res.end('Success');
     } catch (e) {
@@ -116,26 +122,4 @@ module.exports = () => {
   });
 
   return router;
-};
-
-const matchCheck = async(req, res, next) => {
-  const matchId = req.params.matchId;
-
-  const match = await db.Matches.findById(matchId);
-
-  if (!match) {
-    return res.status(404).end('Not found');
-  }
-
-  if (req.body.key !== match.apiKey) {
-    return res.status(400).end('Wrong API Key');
-  }
-
-  if (matches.finalized(match)) {
-    return res.status(400).end('Match already finalized');
-  }
-
-  req.match = match;
-
-  next();
 };
