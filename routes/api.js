@@ -60,11 +60,8 @@ module.exports = () => {
 
       await req.match.save({ transaction });
 
-      const server = await db.GameServers.findById(req.match.serverId, {
-        transaction
-      }).then((server) => server.updateAttributes({
-        inUse: false
-      }));
+      const server = await db.GameServers.findById(req.match.serverId, { transaction });
+      server.updateAttributes({ inUse: false });
 
       await transaction.commit();
 
