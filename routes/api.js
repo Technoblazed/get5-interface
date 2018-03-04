@@ -1,7 +1,6 @@
 const db = require('../models/');
 const debug = require('debug')('get5-web:server');
 const express = require('express');
-const matches = require('../lib/matches');
 
 const router = express.Router();
 
@@ -19,7 +18,7 @@ module.exports = () => {
       return res.status(400).end('Wrong API Key');
     }
 
-    if (matches.finalized(match)) {
+    if (match.finalized()) {
       return res.status(400).end('Match already finalized');
     }
 

@@ -37,5 +37,9 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.prototype.getSteamURL = function() {
+    return `http://steamcommunity.com/profiles/${this.steamId}`;
+  };
+
   return User;
 };

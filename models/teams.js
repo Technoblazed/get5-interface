@@ -59,5 +59,23 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  Teams.prototype.canDelete = function(user) {
+    if (!this.canEdit(user)) {
+      return false;
+    }
+
+    return this.getRecentMatches().length === 0;
+  };
+
+  Teams.prototype.canEdit = function(user) {
+    if (!user) {
+      return false;
+    } else if (this.userId === user.id) {
+      return true;
+    }
+
+    return false;
+  };
+
   return Teams;
 };

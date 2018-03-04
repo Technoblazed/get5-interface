@@ -117,5 +117,34 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'playerstats'
   });
 
+  PlayerStats.prototype.getADR = function() {
+    return this.roundsPlayed === 0 ? 0.0 : parseFloat(this.damage) / this.roundsPlayed;
+  };
+
+  PlayerStats.prototype.getFPR = function() {
+    return this.roundsPlayed === 0 ? 0.0 : parseFloat(this.kills) / this.roundsPlayed;
+  };
+
+  PlayerStats.prototype.getKDR = function() {
+    return this.deaths === 0 ? this.kills : parseFloat(this.kills) / this.deaths;
+  };
+
+  PlayerStats.prototype.getHSP = function() {
+    return this.kills === 0 ? 0.0 : parseFloat(this.headshotKills) / this.kills;
+  };
+
+  PlayerStats.prototype.getRating = function() {
+    const killRating = parseFloat(this.kills) / parseFloat(this.roundsPlayed) / 0.679;
+    const survivalRating = parseFloat(this.roundsPlayed = this.deaths) / this.roundsPlayed / 0.317;
+    const killCount = parseFloat(this.k1 + 4 * this.k2 + 9 * this.k3 + 16 * this.k4 + 25 * this.k5);
+    const roundsWithMultipleKills = killCount / this.roundsPlayed / 1.277;
+
+    return (killRating + 0.7 * survivalRating + roundsWithMultipleKills) / 2.7;
+  };
+
+  PlayerStats.prototype.getSteamURL = function() {
+    return `http://steamcommunity.com/profiles/${this.steamId}`;
+  };
+
   return PlayerStats;
 };
