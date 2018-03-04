@@ -92,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     /**
-     def add_team_data(teamkey, teamid, matchtext):
+    def add_team_data(teamkey, teamid, matchtext):
             team = Team.query.get(teamid)
             if not team:
                 return
