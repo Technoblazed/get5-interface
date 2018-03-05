@@ -37,6 +37,17 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  User.prototype.getRecentMatches = async function(limit = 10) {
+    const matches = await sequelize.models.Matches.findAll({
+      where: {
+        cancelled: false
+      },
+      limit
+    });
+
+    return matches;
+  };
+
   User.prototype.getSteamURL = function() {
     return `http://steamcommunity.com/profiles/${this.steamId}`;
   };

@@ -78,11 +78,11 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  Matches.prototype.buildMatchDict = function() {
+  Matches.prototype.buildMatchDict = async function() {
     const dict = {
       matchid: this.id.toString(),
       match_title: this.title,
-      skip_veto: this.skipVeto
+      skip_veto: this.skipVeto ? this.skipVeto : false
     };
 
     if (this.maxMaps === 2) {
@@ -91,38 +91,46 @@ module.exports = (sequelize, DataTypes) => {
       dict.maps_to_win = this.maxMaps / 2 + 1;
     }
 
+    const addTeamData = async(teamKey, teamId, matchText) => {
+      const team = await sequelize.models.Teams.findById(teamId);
+
+      if (!team) {
+        return;
+      }
+
+      dict[teamKey] = {};
+
+      const addIf = (key, value) => {
+        if (value) {
+          dict[teamKey][key] = value;
+        }
+      };
+
+      addIf('name', team.name);
+      addIf('tag', team.tag);
+      addIf('flag', team.flag.toUpperCase());
+      addIf('logo', team.logo);
+      addIf('matchtext', matchText);
+    };
+
+    await addTeamData('team1', this.team1Id, this.team1String);
+    await addTeamData('team2', this.team2Id, this.team2String);
+
+    dict.cvars = {};
+
     /**
-    def add_team_data(teamkey, teamid, matchtext):
-            team = Team.query.get(teamid)
-            if not team:
-                return
-            d[teamkey] = {}
+      def add_team_data(teamkey, teamid, matchtext):
 
-            # Add entries if they have values.
-            def add_if(key, value):
-                if value:
-                    d[teamkey][key] = value
-            add_if('name', team.name)
-            add_if('name', team.name)
-            add_if('tag', team.tag)
-            add_if('flag', team.flag.upper())
-            add_if('logo', team.logo)
-            add_if('matchtext', matchtext)
-            d[teamkey]['players'] = filter(lambda x: x != '', team.auths)
+              d[teamkey]['players'] = filter(lambda x: x != '', team.auths)
 
-        add_team_data('team1', self.team1_id, self.team1_string)
-        add_team_data('team2', self.team2_id, self.team2_string)
+          d['cvars']['get5_web_api_url'] = url_for(
+              'home', _external=True, _scheme='http')
+       */
 
-        d['cvars'] = {}
-
-        d['cvars']['get5_web_api_url'] = url_for(
-            'home', _external=True, _scheme='http')
-     */
-
-    if (this.vetoMapvool) {
+    if (this.vetoMappool) {
       dict.maplist = [];
 
-      _.forEach(this.vetoMappool.split(), (map) => {
+      _.forEach(this.vetoMappool.split(' '), (map) => {
         dict.maplist.push(map);
       });
     }
@@ -162,6 +170,50 @@ module.exports = (sequelize, DataTypes) => {
       }
     } else {
       return 'Cancelled';
+    }
+  };
+
+  Matches.prototype.getLoser = function() {
+    if (this.team1Score > this.team2Score) {
+      return this.getTeam2();
+    } else if (this.team2Score > this.team1Score) {
+      return this.getTeam1();
+    } else {
+      return;
+    }
+  };
+
+  Matches.prototype.getServer = async function() {
+    const server = await sequelize.models.GameServers.findById(this.serverId);
+
+    return server;
+  };
+
+  Matches.prototype.getTeam1 = async function() {
+    const team1 = await sequelize.models.Teams.findById(this.team1Id);
+
+    return team1;
+  };
+
+  Matches.prototype.getTeam2 = async function() {
+    const team2 = await sequelize.models.Teams.findById(this.team2Id);
+
+    return team2;
+  };
+
+  Matches.prototype.getUser = async function() {
+    const user = await sequelize.models.Users.findById(this.userId);
+
+    return user;
+  };
+
+  Matches.prototype.getWinner = function() {
+    if (this.team1Score > this.team2Score) {
+      return this.getTeam1();
+    } else if (this.team2Score > this.team1Score) {
+      return this.getTeam2();
+    } else {
+      return;
     }
   };
 
