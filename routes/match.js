@@ -1,3 +1,4 @@
+const db = require('../models/');
 const express = require('express');
 
 const router = express.Router();
@@ -23,8 +24,8 @@ module.exports = () => {
 
   });
 
-  router.get('/match/:matchId/config', (req, res) => {
-
+  router.get('/match/:matchId/config', async(req, res) => {
+    return res.json(await req.match.buildMatchDict());
   });
 
   router.get('/match/:matchId/pause', (req, res) => {
@@ -49,6 +50,20 @@ module.exports = () => {
 
   router.get('/mymatches', (req, res) => {
 
+  });
+
+  router.param('matchId', async(req, res, next, id) => {
+    const matchId = req.params.matchId;
+
+    const match = await db.Matches.findById(matchId);
+
+    if (!match) {
+      return res.status(404).end('Not found');
+    }
+
+    req.match = match;
+
+    next();
   });
 
   return router;
