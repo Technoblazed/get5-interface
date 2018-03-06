@@ -1,3 +1,4 @@
+const config = require('../lib/_init').config;
 const express = require('express');
 const init = require('../lib/_init');
 
@@ -5,7 +6,7 @@ const router = express.Router();
 
 module.exports = () => {
   router.get('/', (req, res) => {
-    res.send(123);
+    return res.redirect(config('optional.site.defaultPage'));
   });
 
   router.get('/metrics', (req, res) => {
