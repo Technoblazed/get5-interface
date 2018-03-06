@@ -16,5 +16,7 @@ install:
 
   - cp config/test_config.js config/prod_config.js
 
+  - npm install
+
 before_script:
   - mysql -e 'create database testDatabase;'
