@@ -1,7 +1,7 @@
 const util = require('../lib/util');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const Users = sequelize.define('Users', {
     id: {
       type: DataTypes.INTEGER(11),
       autoIncrement: true,
@@ -24,22 +24,22 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'user'
   });
 
-  User.associate = (models) => {
-    User.hasMany(models.GameServers, {
+  Users.associate = (models) => {
+    Users.hasMany(models.GameServers, {
       foreignKey: 'userId',
       sourceKey: 'id'
     });
-    User.hasMany(models.Matches, {
+    Users.hasMany(models.Matches, {
       foreignKey: 'userId',
       sourceKey: 'id'
     });
-    User.hasMany(models.Teams, {
+    Users.hasMany(models.Teams, {
       foreignKey: 'userId',
       sourceKey: 'id'
     });
   };
 
-  User.prototype.getRecentMatches = async function(limit = 10) {
+  Users.prototype.getRecentMatches = async function(limit = 10) {
     const matches = await sequelize.models.Matches.findAll({
       where: {
         cancelled: false
@@ -50,15 +50,15 @@ module.exports = (sequelize, DataTypes) => {
     return matches;
   };
 
-  User.prototype.getSteamURL = function() {
+  Users.prototype.getSteamURL = function() {
     return `http://steamcommunity.com/profiles/${this.steamId}`;
   };
 
-  User.prototype.getURL = function() {
+  Users.prototype.getURL = function() {
     return util.urlFor('user', {
       userId: this.id
     });
   };
 
-  return User;
+  return Users;
 };
