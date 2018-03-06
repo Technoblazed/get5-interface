@@ -116,6 +116,7 @@ app.use(require(path.join(__dirname, 'routes', 'auth'))(passport));
 app.use(require(path.join(__dirname, 'routes', 'match'))());
 app.use(require(path.join(__dirname, 'routes', 'server'))());
 app.use(require(path.join(__dirname, 'routes', 'team'))());
+app.use(require(path.join(__dirname, 'routes', 'user'))());
 
 app.use((req, res, next) => {
   res.locals.IS_DEV = isDev;

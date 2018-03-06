@@ -5,8 +5,10 @@ const router = express.Router();
 module.exports = () => {
   router.get('/', (req, res) => {
     res.send(123);
+  });
 
-    res.end();
+  router.get('/metrics', (req, res) => {
+
   });
 
   return router;
