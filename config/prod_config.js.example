@@ -10,7 +10,7 @@ module.exports = {
       database: '' // MySQL Database Name
     },
     site: {
-      baseURL: '', // URL for the website, no trailing slash
+      baseURL: '', // URL for the website
       secretKey: '' // Secret key used for Steam logon cookies
     },
     steam: {

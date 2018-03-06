@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const utils = require('../lib/util');
 
 module.exports = (sequelize, DataTypes) => {
   const Matches = sequelize.define('Matches', {
@@ -118,13 +119,14 @@ module.exports = (sequelize, DataTypes) => {
 
     dict.cvars = {};
 
+    dict.get5_web_api_url = utils.urlFor('home', {
+      external: true
+    });
+
     /**
       def add_team_data(teamkey, teamid, matchtext):
 
               d[teamkey]['players'] = filter(lambda x: x != '', team.auths)
-
-          d['cvars']['get5_web_api_url'] = url_for(
-              'home', _external=True, _scheme='http')
        */
 
     if (this.vetoMappool) {

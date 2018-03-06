@@ -23,6 +23,7 @@
     "test": "test"
   },
   "dependencies": {
+    "assert": "^1.4.1",
     "body-parser": "^1.18.2",
     "connect-ensure-login": "^0.1.1",
     "connect-session-sequelize": "^5.2.0",
@@ -45,6 +46,7 @@
     "serve-favicon": "^2.4.5",
     "srcds-rcon": "^2.2.1",
     "steamid": "^1.1.0",
+    "url4": "0.0.2",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {

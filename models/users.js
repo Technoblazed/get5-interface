@@ -1,3 +1,5 @@
+const util = require('../lib/util');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
@@ -50,6 +52,12 @@ module.exports = (sequelize, DataTypes) => {
 
   User.prototype.getSteamURL = function() {
     return `http://steamcommunity.com/profiles/${this.steamId}`;
+  };
+
+  User.prototype.getURL = function() {
+    return util.urlFor('user', {
+      userId: this.id
+    });
   };
 
   return User;
