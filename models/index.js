@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const config = require('../config/prod_config');
-const mysqlConfig = config.required.mysql;
+const config = require('../lib/_init').config;
+const mysqlConfig = config('required.mysql');
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(mysqlConfig.database, mysqlConfig.username, mysqlConfig.password, {
   host: mysqlConfig.host,
   dialect: 'mysql',
-  logging: config.dev.site.debug ? console.log : false
+  logging: config('dev.site.debug') ? console.log : false
 });
 
 const db = {};

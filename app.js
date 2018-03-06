@@ -3,12 +3,12 @@
  */
 
 const bodyParser = require('body-parser');
-const config = require('./config/prod_config');
+const config = require('./lib/_init').config;
 const cookieParser = require('cookie-parser');
 const db = require('./models');
 const express = require('express');
 const expressNunjucks = require('express-nunjucks');
-const favicon = require('serve-favicon');
+//const favicon = require('serve-favicon');
 const logger = require('morgan');
 const passport = require('passport');
 const path = require('path');
@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 const sessionParser = session({
-  secret: config.required.site.secretKey,
+  secret: config('required.site.secretKey'),
   saveUninitialized: true,
   resave: true,
   proxy: true,
@@ -64,7 +64,7 @@ app.use(passport.session());
 passport.use(new steamStrategy({
   returnURL: '/auth/steam/callback',
   realm: '/auth/steam/callback',
-  apiKey: config.required.steam.apiKey
+  apiKey: config('required.steam.apiKey')
 }, (identifier, profile, done) => {
   const steamAvatar = profile._json.avatarfull.split('/').slice(-2).join('/');
 
@@ -125,20 +125,16 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((err, req, res) => {
+  return res.status(err.status || 400).json({ message: err.message.toString() });
+});
+
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
-
-  err.status = 404;
-
-  next(err);
+  return res.status(404).send('Sorry, Nothing at this URL.');
 });
 
 app.use((err, req, res) => {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: isDev ? err : {}
-  });
+  return res.status(err.status || 500).send(`Sorry, unexpected error: ${err.message()}`);
 });
 
 module.exports = { app, server };
