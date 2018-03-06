@@ -1,3 +1,20 @@
 language: node_js
+
 node_js:
   - "8"
+
+services:
+  - mysql
+
+install:
+  - mv config/test_config.js.default config/test_config.js
+
+  - sed -i -e 's/testUsername/travis/g' config/test_config.js
+  - sed -i -e 's/testHostname/localhost/g' config/test_config.js
+
+  - sed -i -e 's/testApiKey/$STEAM_API_KEY/g' config/test_config.js
+
+  - cp config/test_config.js config/prod_config.js
+
+before_script:
+  - mysql -e 'create database testDatabase;'

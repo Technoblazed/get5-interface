@@ -69,6 +69,11 @@ passport.use(new steamStrategy({
   const steamAvatar = profile._json.avatarfull.split('/').slice(-2).join('/');
 
   db.Users.findOrCreate({
+    include: [
+      db.GameServers,
+      db.Matches,
+      db.Teams
+    ],
     where: {
       steamId: +profile.id
     }
@@ -119,6 +124,10 @@ app.use(require(path.join(__dirname, 'routes', 'team'))());
 app.use(require(path.join(__dirname, 'routes', 'user'))());
 
 app.use((req, res, next) => {
+  if (!['GET', 'POST'].includes(req.method)) {
+    return res.status(400).end('Invalid HTTP Method!');
+  }
+
   res.locals.IS_DEV = isDev;
   res.locals.USER = req.user;
   res.locals.PATH = req.url;

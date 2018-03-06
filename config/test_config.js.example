@@ -1,17 +1,17 @@
 module.exports = {
   required: { // These must be changed for test cases to pass
     mysql: {
-      hostname: '',
-      username: '',
+      hostname: 'testHostname',
+      username: 'testUsername',
       password: '',
-      database: ''
+      database: 'testDatabase'
     },
     site: {
       baseURL: '',
       secretKey: ''
     },
     steam: {
-      apiKey: ''
+      apiKey: 'testApiKey'
     }
   },
   optional: {

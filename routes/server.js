@@ -1,15 +1,48 @@
 const _ = require('lodash');
 const authEnsure = require('connect-ensure-login');
+const config = require('../lib/_init').config;
 const db = require('../models/');
 const express = require('express');
+const validate = require('../lib/validate');
 
 const ensureLoggedIn = authEnsure.ensureLoggedIn('/login');
 
 const router = express.Router();
 
 module.exports = () => {
-  router.all('/server/create', (req, res) => {
+  router.all('/server/create', ensureLoggedIn, (req, res) => {
+    if (req.method === 'POST') {
+      const numServers = req.user.GameServers.count();
+      const maxServers = config('optional.user.userMaxServers');
 
+      if (maxServers >= 0 && numServers >= maxServers && !req.user.admin) {
+        // flash('You already have the maximum number of servers ({}) stored'.format(num_servers))
+      } else if (validate.server(req)) {
+        const mock = config('dev.site.testing');
+
+        /*
+        data = form.data
+            server = GameServer.create(g.user,
+                                       data['display_name'],
+                                       data['ip_string'], data['port'],
+                                       data['rcon_password'],
+                                       data['public_server'] and g.user.admin)
+
+            if mock or util.check_server_connection(server):
+                db.session.commit()
+                app.logger.info(
+                    'User {} created server {}'.format(g.user.id, server.id))
+                return redirect('/myservers')
+            else:
+                db.session.remove()
+                flash('Failed to connect to server')
+                */
+      } else {
+        // Flash errors
+      }
+    }
+
+    return res.render('server_create');
   });
 
   router.all('/server/:serverId/edit', (req, res) => {
